@@ -1,0 +1,50 @@
+<!DOCUMENT htm>
+<html lane="en">
+    <meta charset="UTF-8" />
+    <meta name="format-detection" content="telphone=no" />
+    <body>
+        <canvas id = "mainbox" width ="800" height="200">opps! Please update your webview.</canvas>
+    </body>
+    <script type="text/javascript">
+        var img = new Image();
+        img.src = '//mdn.mozillademos.org/files/4553/Capitan_Meadows,_Yosemite_National_Park.jpg';
+        let canvasxsize = 800;
+        let canvasysize = 200;
+        let speed = 30;
+        let scale = 1.05;
+        let y = -4.5;
+        let dx = 0.75;
+        let imgw, imgh, x = 0,clearx, cleary,ctx;
+        img.onload = function() {
+            imgw = img.width*scale;
+            imgh = img.height*scale;
+            if (imgw > canvasxsize) { x = canvasxsize - imgw;}
+            if (imgw > canvasxsize) {
+                clearx = imgw;
+            } else {
+                clearx = canvasxsize;
+            }
+            if (imgh > canvasysize) {
+                cleary = imgh;
+            } else {
+                cleary = canvasysize;
+            }
+            ctx = document.getElementById('mainbox').getContext('2d');
+            return setInterval(draw, speed);
+        }
+        function draw() {
+            ctx.clearRect(0,0,clearx,cleary);
+            if (imgw <= canvasxsize) {
+                if (x > canvasxsize) { x = 0;}
+                if (x > (canvasxsize - imgw)) {
+                    ctx.drawImg(img,x-canvasxsize+1,y,imgw,imgh);
+                }
+            } else {
+                if (x > canvasxsize) { x = canvasxsize - imgw; }
+                if (x > canvasxsize - imgw) { ctx.drawImage(img, x-imgw+1,y,imgw,imgh); }
+            }
+            ctx.drawImage(img,x,y,imgw,imgh);
+            x += dx;
+        }
+    </script>
+</html>

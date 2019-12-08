@@ -25,14 +25,15 @@ function drawBg() {//绘制背景
     }
 }
 function drawItem(){
-    var now1 = new Date();
-    if (lastIndex != now1.getSeconds() - now.getSeconds()) {
-        index ++;
-        lastIndex = now1.getSeconds() - now.getSeconds();
-    } else {
-        window.requestAnimationFrame(drawItem);
-        return;
-    }
+    //var now1 = new Date();
+    //if (lastIndex != now1.getSeconds() - now.getSeconds()) {
+    //    index ++;
+    //    lastIndex = now1.getSeconds() - now.getSeconds();
+    //} else {
+    //    window.requestAnimationFrame(drawItem);
+    //    return;
+    //}
+    //index++;
     clear();
     drawBg();
     //index = now1.getSeconds() - now.getSeconds();
@@ -55,7 +56,7 @@ function drawItem(){
         }
     }
     ctx.restore();
-    window.requestAnimationFrame(drawItem);
+    //window.requestAnimationFrame(drawItem);
 }
 function move(direct){
     if (initLeftIndex + direct >= (10 - itemMap[0].length)) {
@@ -66,6 +67,7 @@ function move(direct){
         initLeftIndex += direct;
     }
     posx = initLeftIndex*(s+b);
+    drawItem();
 }    
 /*
  * 按键处理部分
@@ -202,6 +204,10 @@ function clear() {//清除画布
 
 (function(){
     getRandomItem();
-    window.requestAnimationFrame(drawItem);
+    //window.requestAnimationFrame(drawItem);
+    setInterval(function(){
+        index++;
+        drawItem();
+    },1000);
     
 })();

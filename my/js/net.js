@@ -12,6 +12,9 @@
         //board是一个18*10的数组,也和页面的table对应.   
         //用来标注那些方格已经被占据. 初始时都为0, 如果被占据则为1   
         var board = new Array(18);  
+        //颜色定义
+        var bgColor = 'white';
+        var boxColor = 'grey';
         var KEY = {
             W: 87,
             UP: 38,
@@ -269,25 +272,25 @@
                 //擦除   
         function erase(){    
             for(var i=0; i<4; i++){    
-                tbl.rows[activeBlock[i].x].cells[activeBlock[i].y].style.backgroundColor="white";    
+                tbl.rows[activeBlock[i].x].cells[activeBlock[i].y].style.backgroundColor=bgColor;    
             }    
         }    
         //绘活动图形   
         function paint(){    
             for(var i=0; i<4; i++){    
-                tbl.rows[activeBlock[i].x].cells[activeBlock[i].y].style.backgroundColor="grey";    
+                tbl.rows[activeBlock[i].x].cells[activeBlock[i].y].style.backgroundColor=boxColor;    
             }    
         }  
         //绘预览图形  
         function paintPreview(){  
             for(var i=0; i<4; i++){  
-                preTbl.rows[previewBlock[i].x].cells[previewBlock[i].y].style.backgroundColor="grey";  
+                preTbl.rows[previewBlock[i].x].cells[previewBlock[i].y].style.backgroundColor=boxColor;  
             }  
         }  
         //擦除预览图形  
         function erasePreview(){  
             for(var i=0; i<4; i++){  
-                preTbl.rows[previewBlock[i].x].cells[previewBlock[i].y].style.backgroundColor="white";  
+                preTbl.rows[previewBlock[i].x].cells[previewBlock[i].y].style.backgroundColor=bgColor;  
             }  
         }  
           
@@ -323,7 +326,7 @@
         function eraseBoard(){   
             for(var i=0; i<18; i++){   
                 for(var j=0; j<10; j++){   
-                    tbl.rows[i].cells[j].style.backgroundColor = "white";   
+                    tbl.rows[i].cells[j].style.backgroundColor = bgColor;   
                 }   
             }   
         }   
@@ -332,7 +335,7 @@
             for(var i=0;i<18;i++){   
                 for(var j=0; j<10; j++){    
                   if(board[i][j]==1){   
-                    tbl.rows[i].cells[j].style.backgroundColor = "red";   
+                    tbl.rows[i].cells[j].style.backgroundColor = boxColor;   
                   }   
                 }    
             }    

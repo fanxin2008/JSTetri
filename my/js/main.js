@@ -1,5 +1,5 @@
 const mainbox = document.getElementById('mainbox');
-const ctx= mainbox.getContext('2d');
+const ctx = mainbox.getContext('2d');
 const prebox = document.getElementById('preview');
 const prectx = prebox.getContext('2d');
 const BGCOLOR = '#D3D3D3';//背景颜色
@@ -21,74 +21,68 @@ var bgBlock = new Array(ROW);
 for (var i = 0; i < ROW; i++) {
     bgBlock[i] = new Array(COLUMN).fill(0);
  }
-
 var level = 10;  
 var score = 0;
-var now = new Date();
-var index = 0;
-var lastIndex = index;
-var initLeftIndex = 3;
-var posx = initLeftIndex*(s+b);
 function drawBg() {//绘制背景
     for (var i = 0; i < ROW; i++) {
-        for(var j = 0; j < COLUMN; j++) {
-            if(bgBlock[i][j]!=1){
+        for (var j = 0; j < COLUMN; j++) {
+            if (bgBlock[i][j] != 1) {
               ctx.beginPath();
               ctx.fillStyle = BGCOLOR;
-              ctx.fillRect(2*b+j*(s+b),2*b+i*(s+b),s,s);
-              ctx.fillStyle=WHITE;
-              ctx.fillRect(3*b+j*(s+b),3*b+i*(s+b),s-2*b,s-2*b);
-              ctx.fillStyle=BGCOLOR;
-              ctx.fillRect(4*b+j*(s+b),4*b+i*(s+b),s-4*b,s-4*b);
+              ctx.fillRect(2*b+j*(s+b), 2*b+i*(s+b), s, s);
+              ctx.fillStyle = WHITE;
+              ctx.fillRect(3*b+j*(s+b), 3*b+i*(s+b), s-2*b, s-2*b);
+              ctx.fillStyle = BGCOLOR;
+              ctx.fillRect(4*b+j*(s+b), 4*b+i*(s+b), s-4*b, s-4*b);
             } else {
               ctx.beginPath();
               ctx.fillStyle = ITEM_COLOR;
-              ctx.fillRect(2*b+j*(s+b),2*b+i*(s+b),s,s);
-              ctx.fillStyle=WHITE;
-              ctx.fillRect(3*b+j*(s+b),3*b+i*(s+b),s-2*b,s-2*b);
-              ctx.fillStyle=ITEM_COLOR;
-              ctx.fillRect(4*b+j*(s+b),4*b+i*(s+b),s-4*b,s-4*b);
+              ctx.fillRect(2*b+j*(s+b), 2*b+i*(s+b), s, s);
+              ctx.fillStyle = WHITE;
+              ctx.fillRect(3*b+j*(s+b), 3*b+i*(s+b), s-2*b, s-2*b);
+              ctx.fillStyle = ITEM_COLOR;
+              ctx.fillRect(4*b+j*(s+b), 4*b+i*(s+b), s-4*b, s-4*b);
             }
         }
     }
 }
-function drawItem(){
+function drawItem() {
     clear();
     drawBg();
     ctx.save();
-    for(var _i = 0; _i < itemMap.length; _i++){
+    for (var _i = 0; _i < itemMap.length; _i++) {
         let i = itemMap[_i].x;
         let j = itemMap[_i].y
         ctx.beginPath();
         ctx.fillStyle = ITEM_COLOR;
-        ctx.fillRect(4+j*22,4+i*22,20,20);
-        ctx.fillStyle=WHITE;
-        ctx.fillRect(6+j*22,6+i*22,16,16);
-        ctx.fillStyle=ITEM_COLOR;
-        ctx.fillRect(8+j*22,8+i*22,12,12);
+        ctx.fillRect(4+j*22, 4+i*22, 20, 20);
+        ctx.fillStyle = WHITE;
+        ctx.fillRect(6+j*22, 6+i*22, 16, 16);
+        ctx.fillStyle = ITEM_COLOR;
+        ctx.fillRect(8+j*22, 8+i*22, 12, 12);
     }
     ctx.restore();
 }
-function drawPre(){
+function drawPre() {
     var cw = prebox.innerWidth || 100;
     var ch = prebox.innerHeight || 100;
-    prectx.clearRect(0,0,cw,ch);
-    for(var _i = 0; _i < preItem.length; _i++){
+    prectx.clearRect(0, 0, cw, ch);
+    for (var _i = 0; _i < preItem.length; _i++) {
         let i = preItem[_i].x;
         let j = preItem[_i].y - 3;
         prectx.beginPath();
         prectx.fillStyle = ITEM_COLOR;
-        prectx.fillRect(4+j*22,4+i*22,20,20);
+        prectx.fillRect(4+j*22, 4+i*22, 20, 20);
         prectx.fillStyle=WHITE;
-        prectx.fillRect(6+j*22,6+i*22,16,16);
-        prectx.fillStyle=ITEM_COLOR;
-        prectx.fillRect(8+j*22,8+i*22,12,12);
+        prectx.fillRect(6+j*22, 6+i*22, 16, 16);
+        prectx.fillStyle = ITEM_COLOR;
+        prectx.fillRect(8+j*22, 8+i*22, 12, 12);
     }
     prectx.restore();
 }
-function moveDown(){
-    if(checkBottomBorder()){
-        for(var i = 0; i < itemMap.length; i ++){
+function moveDown() {
+    if (checkBottomBorder()) {
+        for (var i = 0; i < itemMap.length; i++) {
             itemMap[i].x++;
         }
         drawItem();
@@ -101,44 +95,44 @@ function moveDown(){
         copyItem(preItem, itemMap);
         preItem = getRandomItem();
         drawPre();
-        if(checkItemLegal()){
+        if (checkItemLegal()) {
             drawItem();
-            timer = setInterval(moveDown,level * 100);
+            timer = setInterval(moveDown, level * 100);
         } else {
             alert('game over');
         }    
     }
 }
-function copyItem(r,t){
-    for(var i = 0; i < r.length; i++) {
+function copyItem(r, t) {
+    for (var i = 0; i < r.length; i++) {
         t[i].x = r[i].x;
         t[i].y = r[i].y;
     }
 }
 function checkItemLegal(){
     var item = itemMap;
-    if(!item){
+    if (!item) {
         return false;
     }
-    for(var i = 0; i < item.length; i++) {
-        if(!isCellLegal(item[i].x, item[i].y)){
+    for (var i = 0; i < item.length; i++) {
+        if (!isCellLegal(item[i].x, item[i].y)) {
             return false;
         }
     }
     return true;
 }
-function getLine(){
+function getLine() {
     var line = 0;
-    for(var i = 0; i < ROW; i++) {
+    for (var i = 0; i < ROW; i++) {
         var j = 0;
-        for(j = 0; j < COLUMN; j++) {
+        for (j = 0; j < COLUMN; j++) {
             if(bgBlock[i][j] == 0)
             break;
         }
-        if(j == COLUMN) {
-            line ++;
-            if(i != 0) {
-                for(k = i - 1; k >= 0; k--) {
+        if (j == COLUMN) {
+            line++;
+            if (i != 0) {
+                for (k = i - 1; k >= 0; k--) {
                     bgBlock[k+1] = bgBlock[k];
                 }
             }
@@ -148,11 +142,11 @@ function getLine(){
     return line;
 }
 function updateScroe(line) {
-    if(line > 2 && line < 5) {
+    if (line > 2 && line < 5) {
         score = score + line * 20;
-    } else if(line >= 5 && line < 8){
+    } else if (line >= 5 && line < 8){
         score = score + line * 30;
-    } else if(line >=8) {
+    } else if (line >=8) {
         score = score + line * 40;
     } else {
         score = score + line * 10;
@@ -162,47 +156,47 @@ function updateScroe(line) {
     document.getElementsByClassName('score')[0].innerHTML = '<h4>score: ' + score +'</h4>';
 }
 
-function updateBg(){
-    for(var i = 0; i < itemMap.length; i++){
+function updateBg() {
+    for (var i = 0; i < itemMap.length; i++) {
         bgBlock[itemMap[i].x][itemMap[i].y] = 1;
     }
 }
-function moveLeft(){
-    if(checkLeftBorder()) {
-        for(var i = 0; i < itemMap.length; i++) {
+function moveLeft() {
+    if (checkLeftBorder()) {
+        for (var i = 0; i < itemMap.length; i++) {
             itemMap[i].y--;
         }
         drawItem();
     }  
 }
-function moveRight(){
-    if(checkRightBorder()) {
-        for(var i = 0; i < itemMap.length; i++) {
+function moveRight() {
+    if (checkRightBorder()) {
+        for (var i = 0; i < itemMap.length; i++) {
             itemMap[i].y++;
         }
         drawItem();
     }
     
 }
-function checkRightBorder(){
+function checkRightBorder() {
     var item = itemMap;
-    for(var i = 0; i < item.length; i++) {
-        if(item[i].y + 1 == 20) {
+    for (var i = 0; i < item.length; i++) {
+        if (item[i].y + 1 == 20) {
             return false;
         }
-        if(!isCellLegal(item[i].x, item[i].y+1)){
+        if (!isCellLegal(item[i].x, item[i].y+1)) {
             return false;
         }
     }
     return true;
 }
-function checkLeftBorder(){
+function checkLeftBorder() {
     var item = itemMap;
-    for(var i = 0; i < item.length; i++) {
-        if(item[i].y == 0) {
+    for (var i = 0; i < item.length; i++) {
+        if (item[i].y == 0) {
             return false;
         }
-        if(!isCellLegal(item[i].x, item[i].y-1)){
+        if (!isCellLegal(item[i].x, item[i].y-1)) {
             return false;
         }
     }
@@ -210,21 +204,21 @@ function checkLeftBorder(){
 }
 function checkBottomBorder() {
     var item = itemMap;
-    for(var i = 0; i < item.length; i++){
-        if(item[i].x+1 == ROW) {
+    for (var i = 0; i < item.length; i++) {
+        if (item[i].x+1 == ROW) {
             return false;
         }
-        if(!isCellLegal(item[i].x+1, item[i].y)){
+        if (!isCellLegal(item[i].x+1, item[i].y)) {
             return false;
         }
     }
     return true;
 }
 function isCellLegal(x,y) {
-    if(x > 19 || x < 0 || y > 9 || y < 0){
+    if (x > 19 || x < 0 || y > 9 || y < 0) {
         return false;
     }
-    if(bgBlock[x][y] == 1) {
+    if (bgBlock[x][y] == 1) {
         return false;
     }
     return true;
@@ -244,7 +238,6 @@ var KEY = {
 
 function press(event) {
     var code = event.keyCode;
-    var dir = 0;
     switch(code) {
         case KEY.RIGHT:
         case KEY.D: moveRight(); break;
@@ -290,15 +283,9 @@ function getRandomItem() {
     var angle = Math.floor(Math.random() * 3) * 90;
     var temp = new Array(TOTALITEM[_index].length);
     for(var i = 0; i < TOTALITEM[_index].length; i++){
-        // temp[i].x = TOTALITEM[_index][i].x;
-        // temp[i].y = TOTALITEM[_index][i].y;
         temp[i] = Object.assign({}, TOTALITEM[_index][i]);
     }
     return temp;
-    //rotateItem(angle);
-}
-function getNext(){
-
 }
 
 /*
@@ -315,7 +302,7 @@ function rotateItem(an) {
         case 270: result = rotate270(itemMap); break;
         default: break;
     }
-    if(result.length > 0) {
+    if (result.length > 0) {
         itemMap = result;
         drawItem();
     }
@@ -323,19 +310,19 @@ function rotateItem(an) {
 }
 var rotate90 = function() {
     var temp = new Array(itemMap.length);
-    for(var i = 0; i < itemMap.length; i++) {
+    for (var i = 0; i < itemMap.length; i++) {
         temp[i] = new Array(itemMap[i].length).fill(0);
     }
     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
     var tempx,tempy;
-    for(var i = 0; i < itemMap.length; i++){
+    for (var i = 0; i < itemMap.length; i++) {
         tempx = itemMap[i].x;
         tempy = itemMap[i].y;
         temp[i].x = cx + cy - tempy ;
         temp[i].y = cy - cx + tempx ; 
     } 
-    for(var i = 0; i < itemMap.length; i++){
+    for (var i = 0; i < itemMap.length; i++) {
         if(!isCellLegal(temp[i].x, temp[i].y)){
             return [];
         }
@@ -344,20 +331,20 @@ var rotate90 = function() {
 };
 function rotate180() {
     var temp = new Array(itemMap.length);
-    for(var i = 0; i < itemMap.length; i++) {
+    for (var i = 0; i < itemMap.length; i++) {
         temp[i] = new Array(itemMap[i].length).fill(0);
     }
     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
     var tempx,tempy;
-    for(var i = 0; i < itemMap.length; i++){
+    for (var i = 0; i < itemMap.length; i++) {
         tempx = itemMap[i].x;
         tempy = itemMap[i].y;
         temp[i].x = 2*cx - tempx ;
         temp[i].y = 2*cy - tempy ; 
     } 
-    for(var i = 0; i < itemMap.length; i++){
-        if(!isCellLegal(temp[i].x, temp[i].y)){
+    for (var i = 0; i < itemMap.length; i++) {
+        if (!isCellLegal(temp[i].x, temp[i].y)) {
             return [];
         }
     }
@@ -365,19 +352,19 @@ function rotate180() {
 }
 function rotate270() {
     var temp = new Array(itemMap.length);
-    for(var i = 0; i < itemMap.length; i++) {
+    for (var i = 0; i < itemMap.length; i++) {
         temp[i] = new Array(itemMap[i].length).fill(0);
     }
     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
     var tempx,tempy;
-    for(var i = 0; i < itemMap.length; i++){
+    for (var i = 0; i < itemMap.length; i++){
         tempx = itemMap[i].x;
         tempy = itemMap[i].y;
         temp[i].x = tempy - cy + cx;
         temp[i].y = cx - cy + tempx ; 
     } 
-    for(var i = 0; i < itemMap.length; i++){
+    for (var i = 0; i < itemMap.length; i++){
         if(!isCellLegal(temp[i].x, temp[i].y)){
             return [];
         }
@@ -387,7 +374,7 @@ function rotate270() {
 function clear() {//清除画布
     var cw = mainbox.innerWidth || 226;
     var ch = mainbox.innerHeight || 446;
-    ctx.clearRect(0,0,cw,ch);
+    ctx.clearRect(0, 0, cw, ch);
 }
 
 (function(){
@@ -399,6 +386,5 @@ function clear() {//清除画布
     drawPre();
     timer = setInterval(function(){
         moveDown();
-    }, level*100);
-    
+    }, level*100); 
 })();

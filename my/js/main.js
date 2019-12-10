@@ -151,11 +151,14 @@ function updateScroe(line) {
     } else {
         score = score + line * 10;
     }
-    level = 10 - parseInt(score/100);
+    level = (10 - parseInt(score/100)) <= 0 ? 1 : (10 - parseInt(score/100));
     document.getElementsByClassName('level')[0].innerHTML = '<h4>level: ' + (10 - level + 1) +'</h4>';
     document.getElementsByClassName('score')[0].innerHTML = '<h4>score: ' + score +'</h4>';
 }
-
+function goBottom() {
+    clearInterval(timer);
+    timer = setInterval(moveDown, 50);
+} 
 function updateBg() {
     for (var i = 0; i < itemMap.length; i++) {
         bgBlock[itemMap[i].x][itemMap[i].y] = 1;
@@ -233,7 +236,8 @@ var KEY = {
     D: 68,
     A: 65,
     LEFT: 37,
-    RIGHT: 39
+    RIGHT: 39,
+    BS:32
 };
 
 function press(event) {
@@ -247,6 +251,9 @@ function press(event) {
 
         case KEY.UP:
         case KEY.W: rotateItem(); break;
+
+        case KEY.BS: goBottom(); break;
+
         default:moveDown(); break;
     }
 }
@@ -258,8 +265,12 @@ function release(event) {
             
         case KEY.LEFT:
         case KEY.A: moveLeft(); break;
+
         case KEY.UP:
         case KEY.W: rotateItem(); break;
+
+        case KEY.BS: goBottom(); break;
+
         default:moveDown(); break;
     }
 }
@@ -280,7 +291,7 @@ var TOTALITEM = [
     
 function getRandomItem() {
     var _index = Math.floor(Math.random() * 7);
-    var angle = Math.floor(Math.random() * 3) * 90;
+    //var angle = Math.floor(Math.random() * 3) * 90;
     var temp = new Array(TOTALITEM[_index].length);
     for(var i = 0; i < TOTALITEM[_index].length; i++){
         temp[i] = Object.assign({}, TOTALITEM[_index][i]);
@@ -297,9 +308,9 @@ function rotateItem(an) {
     var angle = an || 90;
     switch(angle) {
         case 0: result = itemMap; break;
-        case 90: result = rotate90(itemMap); break; 
-        case 180: result = rotate180(itemMap); break;
-        case 270: result = rotate270(itemMap); break;
+        case 90: result = rotate90(); break; 
+        case 180: result = rotate180(); break;
+        case 270: result = rotate270(); break;
         default: break;
     }
     if (result.length > 0) {

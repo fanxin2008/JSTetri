@@ -184,7 +184,7 @@ function moveRight() {
 function checkRightBorder() {
     var item = itemMap;
     for (var i = 0; i < item.length; i++) {
-        if (item[i].y + 1 == 20) {
+        if (item[i].y + 1 == ROW) {
             return false;
         }
         if (!isCellLegal(item[i].x, item[i].y+1)) {
@@ -208,17 +208,17 @@ function checkLeftBorder() {
 function checkBottomBorder() {
     var item = itemMap;
     for (var i = 0; i < item.length; i++) {
-        if (item[i].x+1 == ROW) {
+        if (item[i].x + 1 == ROW) {
             return false;
         }
-        if (!isCellLegal(item[i].x+1, item[i].y)) {
+        if (!isCellLegal(item[i].x + 1, item[i].y)) {
             return false;
         }
     }
     return true;
 }
-function isCellLegal(x,y) {
-    if (x > 19 || x < 0 || y > 9 || y < 0) {
+function isCellLegal(x, y) {
+    if (x > ROW - 1 || x < 0 || y > COLUMN - 1 || y < 0) {
         return false;
     }
     if (bgBlock[x][y] == 1) {
@@ -290,10 +290,10 @@ var TOTALITEM = [
 ]
     
 function getRandomItem() {
-    var _index = Math.floor(Math.random() * 7);
+    var _index = Math.floor(Math.random() * TOTALITEM.length);
     //var angle = Math.floor(Math.random() * 3) * 90;
     var temp = new Array(TOTALITEM[_index].length);
-    for(var i = 0; i < TOTALITEM[_index].length; i++){
+    for (var i = 0; i < TOTALITEM[_index].length; i++) {
         temp[i] = Object.assign({}, TOTALITEM[_index][i]);
     }
     return temp;
@@ -309,8 +309,8 @@ function rotateItem(an) {
     switch(angle) {
         case 0: result = itemMap; break;
         case 90: result = rotate90(); break; 
-        case 180: result = rotate180(); break;
-        case 270: result = rotate270(); break;
+        // case 180: result = rotate180(); break;
+        // case 270: result = rotate270(); break;
         default: break;
     }
     if (result.length > 0) {
@@ -319,14 +319,14 @@ function rotateItem(an) {
     }
     return result; 
 }
-var rotate90 = function() {
+function rotate90() {
     var temp = new Array(itemMap.length);
     for (var i = 0; i < itemMap.length; i++) {
         temp[i] = new Array(itemMap[i].length).fill(0);
     }
     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
-    var tempx,tempy;
+    var tempx, tempy;
     for (var i = 0; i < itemMap.length; i++) {
         tempx = itemMap[i].x;
         tempy = itemMap[i].y;
@@ -334,54 +334,54 @@ var rotate90 = function() {
         temp[i].y = cy - cx + tempx ; 
     } 
     for (var i = 0; i < itemMap.length; i++) {
-        if(!isCellLegal(temp[i].x, temp[i].y)){
-            return [];
-        }
-    }
-    return temp;
-};
-function rotate180() {
-    var temp = new Array(itemMap.length);
-    for (var i = 0; i < itemMap.length; i++) {
-        temp[i] = new Array(itemMap[i].length).fill(0);
-    }
-    var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
-    var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
-    var tempx,tempy;
-    for (var i = 0; i < itemMap.length; i++) {
-        tempx = itemMap[i].x;
-        tempy = itemMap[i].y;
-        temp[i].x = 2*cx - tempx ;
-        temp[i].y = 2*cy - tempy ; 
-    } 
-    for (var i = 0; i < itemMap.length; i++) {
         if (!isCellLegal(temp[i].x, temp[i].y)) {
             return [];
         }
     }
     return temp;
-}
-function rotate270() {
-    var temp = new Array(itemMap.length);
-    for (var i = 0; i < itemMap.length; i++) {
-        temp[i] = new Array(itemMap[i].length).fill(0);
-    }
-    var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
-    var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
-    var tempx,tempy;
-    for (var i = 0; i < itemMap.length; i++){
-        tempx = itemMap[i].x;
-        tempy = itemMap[i].y;
-        temp[i].x = tempy - cy + cx;
-        temp[i].y = cx - cy + tempx ; 
-    } 
-    for (var i = 0; i < itemMap.length; i++){
-        if(!isCellLegal(temp[i].x, temp[i].y)){
-            return [];
-        }
-    }
-    return temp;
-}
+};
+// function rotate180() {
+//     var temp = new Array(itemMap.length);
+//     for (var i = 0; i < itemMap.length; i++) {
+//         temp[i] = new Array(itemMap[i].length).fill(0);
+//     }
+//     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
+//     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
+//     var tempx,tempy;
+//     for (var i = 0; i < itemMap.length; i++) {
+//         tempx = itemMap[i].x;
+//         tempy = itemMap[i].y;
+//         temp[i].x = 2*cx - tempx ;
+//         temp[i].y = 2*cy - tempy ; 
+//     } 
+//     for (var i = 0; i < itemMap.length; i++) {
+//         if (!isCellLegal(temp[i].x, temp[i].y)) {
+//             return [];
+//         }
+//     }
+//     return temp;
+// }
+// function rotate270() {
+//     var temp = new Array(itemMap.length);
+//     for (var i = 0; i < itemMap.length; i++) {
+//         temp[i] = new Array(itemMap[i].length).fill(0);
+//     }
+//     var cx = Math.round((itemMap[0].x + itemMap[1].x + itemMap[2].x + itemMap[3].x)/4);;
+//     var cy = Math.round((itemMap[0].y + itemMap[1].y + itemMap[2].y + itemMap[3].y)/4);;
+//     var tempx,tempy;
+//     for (var i = 0; i < itemMap.length; i++){
+//         tempx = itemMap[i].x;
+//         tempy = itemMap[i].y;
+//         temp[i].x = tempy - cy + cx;
+//         temp[i].y = cx - cy + tempx ; 
+//     } 
+//     for (var i = 0; i < itemMap.length; i++) {
+//         if (!isCellLegal(temp[i].x, temp[i].y)) {
+//             return [];
+//         }
+//     }
+//     return temp;
+// }
 function clear() {//清除画布
     var cw = mainbox.innerWidth || 226;
     var ch = mainbox.innerHeight || 446;
